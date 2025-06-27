@@ -7,3 +7,5 @@
 #3 bubble sort for random integers - (python)
 
 #4 file organiser - (python)
+
+#5 NEA dice game - (python)
