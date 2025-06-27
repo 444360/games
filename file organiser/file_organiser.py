@@ -75,7 +75,7 @@ def organise_files(folder_path, custom_rules=None):
                 log_move(file_path, os.path.join(dest_folder, filename))
                 print(f"Moved '{filename}' to Others/")
 
-#   UNDO LAST FILE MOVE
+#   UNDO FILE MOVES
 def undo_last_move():
     if not os.path.exists(UNDO_LOG):
         print("No moves to undo")
