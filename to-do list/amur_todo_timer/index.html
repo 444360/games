@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmurList</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tw+Cen+MT:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="grid-container">
+        <!-- TOP-LEFT: Logo and theme hearts -->
+        <div class="top-left">
+            <div class="logo-container">
+                <h1 class="logo"><span class="strikethrough">Amur</span>List</h1>
+                <div class="theme-hearts">
+                    <i class="fas fa-heart theme-1 active" data-theme="1"></i>
+                    <i class="fas fa-heart theme-2" data-theme="2"></i>
+                    <i class="fas fa-heart theme-3" data-theme="3"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP-MIDDLE: Icons -->
+        <div class="top-middle">
+            <div class="icon-container">
+                <i class="fab fa-spotify music-icon" id="spotify-icon"></i>
+                <i class="fab fa-itunes-note music-icon" id="itunes-icon"></i>
+                <i class="fas fa-bell bell-icon" id="bell-icon"></i>
+                <i class="fas fa-undo undo-icon"></i>
+                <i class="fas fa-redo redo-icon"></i>
+                <i class="fas fa-info-circle info-icon"></i>
+            </div>
+        </div>
+
+        <!-- TOP-RIGHT: Music player -->
+        <div class="top-right">
+            <div class="music-player">
+                <p class="music-status">No music connected</p>
+                <div class="music-controls hidden">
+                    <i class="fas fa-step-backward"></i>
+                    <i class="fas fa-play"></i>
+                    <i class="fas fa-step-forward"></i>
+                    <div class="volume-control">
+                        <i class="fas fa-volume-up"></i>
+                        <input type="range" min="0" max="100" value="50">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM-LEFT: To-do list -->
+        <div class="bottom-left">
+            <div class="todo-header">
+                <h2>To-Do</h2>
+                <div class="todo-actions">
+                    <button id="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                    <select id="sort-tasks">
+                        <option value="priority-high">Priority (High to Low)</option>
+                        <option value="priority-low">Priority (Low to High)</option>
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="todo-list" id="todo-list">
+                <!-- Tasks will be added here dynamically -->
+            </div>
+        </div>
+
+        <!-- BOTTOM-MIDDLE: In Progress -->
+        <div class="bottom-middle">
+            <h2>In Progress</h2>
+            <div class="in-progress-list" id="in-progress-list">
+                <!-- In-progress tasks will be added here dynamically -->
+            </div>
+        </div>
+
+        <!-- BOTTOM-RIGHT: Completed -->
+        <div class="bottom-right">
+            <h2>Completed</h2>
+            <div class="completed-list" id="completed-list">
+                <!-- Completed tasks will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div class="modal" id="add-task-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Add New Task</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-name">Task Name:</label>
+                    <input type="text" id="task-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Priority:</label>
+                    <div class="priority-options">
+                        <label>
+                            <input type="radio" name="priority" value="normal" checked>
+                            <span class="priority-normal">Normal</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="priority" value="medium">
+                            <span class="priority-medium">Medium (!)</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="priority" value="high">
+                            <span class="priority-high">High (!!)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-time">Completion Time (minutes):</label>
+                    <input type="number" id="task-time" min="1" value="30" required>
+                </div>
+                <button type="submit" class="add-task-btn">Add Task</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Timer Complete Modal -->
+    <div class="modal" id="timer-complete-modal">
+        <div class="modal-content">
+            <h2>Timer Complete!</h2>
+            <p id="completed-task-name"></p>
+            <audio id="timer-sound" src="notification.mp3" preload="auto"></audio>
+            <button class="ok-btn">OK</button>
+        </div>
+    </div>
+
+    <!-- Sound Selection Modal -->
+    <div class="modal" id="sound-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Select Timer Sound</h2>
+            <div class="sound-options">
+                <div class="sound-option" data-sound="notification.mp3">
+                    <i class="fas fa-bell"></i>
+                    <span>Default Bell</span>
+                </div>
+                <div class="sound-option" data-sound="alarm.mp3">
+                    <i class="fas fa-clock"></i>
+                    <span>Alarm</span>
+                </div>
+                <div class="sound-option" data-sound="chime.mp3">
+                    <i class="fas fa-music"></i>
+                    <span>Chime</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
