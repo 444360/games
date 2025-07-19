@@ -23,6 +23,7 @@ const alarmSoundSelect = document.getElementById('alarm-sound');
 const testSoundBtn = document.getElementById('test-sound-btn');
 const saveSoundBtn = document.getElementById('save-sound-btn');
 const alarmSoundElement = document.getElementById('alarm-sound-element');
+const copyrightYear = document.querySelector('.copyright');
 
 // ========== STATE ========== //
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -30,6 +31,24 @@ let activeTimers = {};
 let currentTheme = localStorage.getItem('theme') || '1';
 let alarmSound = localStorage.getItem('alarmSound') || 'bell';
 let formSubmitListenerAttached = false;
+
+// ========== INITIALIZATION ========== //
+function init() {
+    setupEventListeners();
+    renderTasks();
+    setTheme(currentTheme);
+    setCopyrightYear();
+    
+    tasks.filter(task => task.status === 'in-progress').forEach(task => {
+        if (!task.timeLeft) task.timeLeft = task.time * 60;
+        startTimer(task.id);
+    });
+}
+
+function setCopyrightYear() {
+    const year = new Date().getFullYear();
+    copyrightYear.textContent = `© ${year} AmurList. All rights reserved.`;
+}
 
 // ========== TASK FUNCTIONS ========== //
 function createTask(name, priority, time) {
@@ -190,6 +209,36 @@ function renderTaskList(container, taskSubset, isInProgress = false, isCompleted
     });
 }
 
+// ========== THEME FUNCTIONS ========== //
+function setTheme(theme) {
+    themeButtons.forEach(b => b.classList.remove('active-theme'));
+    document.querySelector(`.theme-switcher i[data-theme="${theme}"]`).classList.add('active-theme');
+    
+    currentTheme = theme;
+    localStorage.setItem('theme', theme);
+    
+    let bgColor, headerColor;
+    
+    switch(theme) {
+        case '1': bgColor = '#F7E9E9FF'; headerColor = '#eac4d5'; break;
+        case '2': bgColor = '#d6eadf'; headerColor = '#b8e0d2'; break;
+        case '3': bgColor = '#aec6cf'; headerColor = '#a2bffe'; break;
+        case '4': bgColor = '#f0e6ff'; headerColor = '#d4b8ff'; break;
+        case '5': bgColor = '#fff5e6'; headerColor = '#ffe5b8'; break;
+        case '6': bgColor = '#e0e0e0'; headerColor = '#a0a0a0'; break;
+        default: bgColor = '#F7E9E9FF'; headerColor = '#eac4d5';
+    }
+    
+    document.body.style.backgroundColor = bgColor;
+    document.querySelectorAll('.header-section, .task-column, .footer').forEach(el => {
+        el.style.backgroundColor = headerColor;
+    });
+    
+    document.querySelectorAll('.submit-btn, .alert-modal button').forEach(btn => {
+        btn.style.backgroundColor = headerColor;
+    });
+}
+
 // ========== EVENT HANDLERS ========== //
 function setupEventListeners() {
     // Theme switcher
@@ -246,7 +295,7 @@ function setupEventListeners() {
     todoSort.addEventListener('change', () => sortTasks('todo', todoSort.value));
     progressSort.addEventListener('change', () => sortTasks('in-progress', progressSort.value));
     
-    // Close modals when clicking outside
+
     window.addEventListener('click', (e) => {
         if (e.target === taskModal) taskModal.style.display = 'none';
         if (e.target === soundModal) soundModal.style.display = 'none';
@@ -314,35 +363,6 @@ function undoLastAction() {
     }
 }
 
-function setTheme(theme) {
-    themeButtons.forEach(b => b.classList.remove('active-theme'));
-    document.querySelector(`.theme-switcher i[data-theme="${theme}"]`).classList.add('active-theme');
-    
-    currentTheme = theme;
-    localStorage.setItem('theme', theme);
-    
-    let bgColor, headerColor;
-    
-    switch(theme) {
-        case '1': bgColor = '#F7E9E9FF'; headerColor = '#eac4d5'; break;
-        case '2': bgColor = '#d6eadf'; headerColor = '#b8e0d2'; break;
-        case '3': bgColor = '#aec6cf'; headerColor = '#a2bffe'; break;
-        case '4': bgColor = '#f0e6ff'; headerColor = '#d4b8ff'; break;
-        case '5': bgColor = '#fff5e6'; headerColor = '#ffe5b8'; break;
-        case '6': bgColor = '#e0e0e0'; headerColor = '#a0a0a0'; break;
-        default: bgColor = '#F7E9E9FF'; headerColor = '#eac4d5';
-    }
-    
-    document.body.style.backgroundColor = bgColor;
-    document.querySelectorAll('.header-section, .task-column').forEach(el => {
-        el.style.backgroundColor = headerColor;
-    });
-    
-    document.querySelectorAll('.submit-btn, .alert-modal button').forEach(btn => {
-        btn.style.backgroundColor = headerColor;
-    });
-}
-
 function playAlarmSound() {
     alarmSoundElement.currentTime = 0;
     alarmSoundElement.play();
@@ -358,18 +378,5 @@ function saveAlarmSound() {
 function saveTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
-
-// ========== INITIALISATION ========== //
-function init() {
-    setupEventListeners();
-    renderTasks();
-    setTheme(currentTheme);
-    
-    tasks.filter(task => task.status === 'in-progress').forEach(task => {
-        if (!task.timeLeft) task.timeLeft = task.time * 60;
-        startTimer(task.id);
-    });
-}
-
 
 init();
