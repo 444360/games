@@ -10,4 +10,4 @@
 
 #5 NEA dice game - (python)
 
-#6 To-do list with built in timer and music player - (html, css, javascript)
+#6 To-do list with built in timer and music player - (html, css, javascript) - link: amur-list.vercel.app
