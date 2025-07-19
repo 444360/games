@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tw+Cen+MT:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +20,6 @@
             padding: 20px;
         }
 
-        /* Header Styles */
         .header {
             display: flex;
             justify-content: space-between;
@@ -34,11 +32,12 @@
             background-color: #eac4d5;
             border-radius: 10px;
             padding: 15px;
-            flex: 1;  /* This already matches the task columns */
+            flex: 1;
+            height: 80px;
             min-height: 80px;
             display: flex;
             align-items: center;
-            min-width: 0; /* Add this to prevent flex item overflow */
+            min-width: 0;
         }
 
         .logo-container {
@@ -49,9 +48,10 @@
         }
 
         .logo {
-            font-size: 50px;
+            font-size: 60px;
             font-weight: bold;
             white-space: nowrap;
+            letter-spacing: 2px
         }
 
         .logo-white {
@@ -71,7 +71,7 @@
 
         .theme-switcher {
             display: flex;
-            gap: 10px;
+            gap: 20px;
             align-items: center;
         }
 
@@ -85,61 +85,29 @@
             transform: scale(1.1);
         }
 
-        .theme-1 { color: #eac4d5; }
-        .theme-2 { color: #b8e0d2; }
-        .theme-3 { color: #a2bffe; }
+        /* Theme Colors */
+        .theme-1 { color: #eac4d5; } /* Original pink */
+        .theme-2 { color: #b8e0d2; } /* Original mint */
+        .theme-3 { color: #a2bffe; } /* Original blue */
+        .theme-4 { color: #d4b8ff; } /* Pastel purple */
+        .theme-5 { color: #ffe5b8; } /* Pastel yellow */
+        .theme-6 { color: #a0a0a0; } /* Dark mode grey */
 
-        /* Darker glow effect for active theme */
         .theme-switcher i.active-theme {
             filter: drop-shadow(0 0 6px rgba(0,0,0,0.3));
         }
 
-        /* Specific colors for each theme's glow */
-        .theme-1::after { background: rgba(234, 196, 213, 0.5); } /* Matching theme 1 color */
-        .theme-2::after { background: rgba(184, 224, 210, 0.5); } /* Matching theme 2 color */
-        .theme-3::after { background: rgba(162, 191, 254, 0.5); } /* Matching theme 3 color */
-
- /*       .active-theme {
-            border: 2px solid #333;
-            border-radius: 50%;
-            padding: 2px;
-        } */
-
-        /* Music Player */
-        .music-player {
-            text-align: center;
-            flex-grow: 1;
-        }
-
-        .music-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 5px;
-        }
-
-        .music-controls i {
-            cursor: pointer;
-        }
-
-        .music-status {
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        /* Icons */
         .action-icons {
             display: flex;
-            gap: 15px;
-            justify-content: flex-end;
+            gap: 20px;
+            justify-content: center;
         }
 
         .action-icons i {
-            font-size: 20px;
+            font-size: 28px;
             cursor: pointer;
         }
 
-        /* Task Columns */
         .columns-container {
             display: flex;
             gap: 20px;
@@ -162,7 +130,7 @@
 
         .column-title {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 25px;
         }
 
         .add-task-btn {
@@ -172,7 +140,6 @@
             font-size: 16px;
         }
 
-        /* Task Items */
         .task-list {
             display: flex;
             flex-direction: column;
@@ -186,11 +153,7 @@
             padding: 12px;
             display: flex;
             justify-content: space-between;
-            cursor: grab;
-        }
-
-        .task.dragging {
-            opacity: 0.5;
+            user-select: none;
         }
 
         .task-info {
@@ -215,26 +178,28 @@
         .task-actions {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
         .task-actions i {
             cursor: pointer;
+            font-size: 18px;
         }
 
-        /* Priority Indicators */
         .priority-high::after {
             content: "!!";
             color: red;
             margin-left: 5px;
+            display: inline !important;
         }
 
         .priority-medium::after {
             content: "!";
             color: orange;
             margin-left: 5px;
+            display: inline !important;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -296,9 +261,14 @@
             cursor: pointer;
             font-weight: bold;
             margin-top: 10px;
+            transition: all 0.2s;
         }
 
-        /* Alert Modal */
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
         .alert-modal {
             text-align: center;
         }
@@ -316,7 +286,6 @@
             font-weight: bold;
         }
 
-        /* Dropdown */
         .sort-dropdown {
             padding: 2px;
             border-radius: 4px;
@@ -328,37 +297,29 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <!-- Logo and Theme Section -->
-        <div class="header-section logo-container">
+        <!-- Logo Section -->
+        <div class="header-section logo-container" style="justify-content: center;">
             <div class="logo"><span class="strikethrough">Amur</span><span class="logo-white">List</span></div>
-            <div class="theme-switcher-container">
-                <div class="theme-switcher">
-                    <i class="fas fa-heart theme-1 active-theme" data-theme="1"></i>
-                    <i class="fas fa-heart theme-2" data-theme="2"></i>
-                    <i class="fas fa-heart theme-3" data-theme="3"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Music Player Section -->
-        <div class="header-section music-player">
-            <div class="music-status">No music connected</div>
-            <div class="music-controls">
-                <i class="fas fa-play" id="play-btn"></i>
-                <i class="fas fa-pause" id="pause-btn"></i>
-                <i class="fas fa-step-forward" id="next-btn"></i>
-                <i class="fas fa-volume-up" id="volume-btn"></i>
-            </div>
         </div>
 
         <!-- Action Icons Section -->
-        <div class="header-section">
+        <div class="header-section" style="justify-content: center;">
             <div class="action-icons">
-                <i class="fab fa-spotify" id="spotify-btn" title="Connect Spotify"></i>
-                <i class="fab fa-itunes-note" id="apple-btn" title="Connect Apple Music"></i>
                 <i class="fas fa-bell" id="sound-btn" title="Change alarm sound"></i>
                 <i class="fas fa-undo" id="undo-btn" title="Undo"></i>
                 <i class="fas fa-info-circle" id="info-btn" title="Information"></i>
+            </div>
+        </div>
+
+        <!-- Theme Switcher Section -->
+        <div class="header-section" style="justify-content: center;">
+            <div class="theme-switcher">
+                <i class="fas fa-heart theme-1 active-theme" data-theme="1"></i>
+                <i class="fas fa-heart theme-2" data-theme="2"></i>
+                <i class="fas fa-heart theme-3" data-theme="3"></i>
+                <i class="fas fa-heart theme-4" data-theme="4"></i>
+                <i class="fas fa-heart theme-5" data-theme="5"></i>
+                <i class="fas fa-heart theme-6" data-theme="6"></i>
             </div>
         </div>
     </header>
@@ -371,7 +332,7 @@
                 <h2 class="column-title">TO DO</h2>
                 <div>
                     <select class="sort-dropdown" id="todo-sort">
-                        <option value="priority-high">Sort by: Priority (High to Low)</option>
+                        <option value="priority-high">Priority (High to Low)</option>
                         <option value="priority-low">Priority (Low to High)</option>
                         <option value="name-asc">Name (A-Z)</option>
                         <option value="name-desc">Name (Z-A)</option>
@@ -391,7 +352,7 @@
             <div class="column-header">
                 <h2 class="column-title">IN PROGRESS</h2>
                 <select class="sort-dropdown" id="progress-sort">
-                    <option value="time-asc">Sort by: Time (Shortest)</option>
+                    <option value="time-asc">Time (Shortest)</option>
                     <option value="time-desc">Time (Longest)</option>
                 </select>
             </div>
@@ -481,12 +442,11 @@
         <div class="modal-content">
             <span class="close-btn" id="close-info-modal">&times;</span>
             <h2>About AmurList</h2>
-            <p>A simple task management tool with timers and music integration.</p>
+            <p>A simple task management tool with timers.</p>
             <p>Features:</p>
             <ul style="margin-left: 20px; margin-bottom: 15px;">
                 <li>Add tasks with priorities and timers</li>
-                <li>Drag tasks between columns</li>
-                <li>Music player controls</li>
+                <li>Move tasks between columns using buttons</li>
                 <li>Customizable themes</li>
                 <li>Alarm notifications</li>
             </ul>
@@ -498,342 +458,144 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
     </audio>
 
-    <script>
-        // DOM Elements
-        const themeButtons = document.querySelectorAll('.theme-switcher i');
-        const spotifyBtn = document.getElementById('spotify-btn');
-        const appleBtn = document.getElementById('apple-btn');
-        const soundBtn = document.getElementById('sound-btn');
-        const undoBtn = document.getElementById('undo-btn');
-        const infoBtn = document.getElementById('info-btn');
-        const playBtn = document.getElementById('play-btn');
-        const pauseBtn = document.getElementById('pause-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const volumeBtn = document.getElementById('volume-btn');
-        const addTaskBtn = document.getElementById('add-task-btn');
-        const clearCompletedBtn = document.getElementById('clear-completed-btn');
-        const closeTaskModal = document.getElementById('close-task-modal');
-        const closeSoundModal = document.getElementById('close-sound-modal');
-        const closeInfoModal = document.getElementById('close-info-modal');
-        const closeAlertBtn = document.getElementById('close-alert-btn');
-        const taskModal = document.getElementById('task-modal');
-        const soundModal = document.getElementById('sound-modal');
-        const infoModal = document.getElementById('info-modal');
-        const alertModal = document.getElementById('alert-modal');
-        const taskForm = document.getElementById('task-form');
-        const todoList = document.getElementById('todo-list');
-        const inProgressList = document.getElementById('in-progress-list');
-        const completedList = document.getElementById('completed-list');
-        const todoSort = document.getElementById('todo-sort');
-        const progressSort = document.getElementById('progress-sort');
-        const alarmSoundSelect = document.getElementById('alarm-sound');
-        const testSoundBtn = document.getElementById('test-sound-btn');
-        const saveSoundBtn = document.getElementById('save-sound-btn');
-        const alarmSoundElement = document.getElementById('alarm-sound-element');
+<script>
+    // ========== DOM ELEMENTS ========== //
+    const themeButtons = document.querySelectorAll('.theme-switcher i');
+    const soundBtn = document.getElementById('sound-btn');
+    const undoBtn = document.getElementById('undo-btn');
+    const infoBtn = document.getElementById('info-btn');
+    const addTaskBtn = document.getElementById('add-task-btn');
+    const clearCompletedBtn = document.getElementById('clear-completed-btn');
+    const closeTaskModal = document.getElementById('close-task-modal');
+    const closeSoundModal = document.getElementById('close-sound-modal');
+    const closeInfoModal = document.getElementById('close-info-modal');
+    const closeAlertBtn = document.getElementById('close-alert-btn');
+    const taskModal = document.getElementById('task-modal');
+    const soundModal = document.getElementById('sound-modal');
+    const infoModal = document.getElementById('info-modal');
+    const alertModal = document.getElementById('alert-modal');
+    const taskForm = document.getElementById('task-form');
+    const todoList = document.getElementById('todo-list');
+    const inProgressList = document.getElementById('in-progress-list');
+    const completedList = document.getElementById('completed-list');
+    const todoSort = document.getElementById('todo-sort');
+    const progressSort = document.getElementById('progress-sort');
+    const alarmSoundSelect = document.getElementById('alarm-sound');
+    const testSoundBtn = document.getElementById('test-sound-btn');
+    const saveSoundBtn = document.getElementById('save-sound-btn');
+    const alarmSoundElement = document.getElementById('alarm-sound-element');
 
-        // State
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        let activeTimers = {};
-        let draggedTask = null;
-        let currentTheme = '1';
-        let alarmSound = localStorage.getItem('alarmSound') || 'bell';
-        let musicConnected = false;
-        let musicPlaying = false;
+    // ========== STATE ========== //
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    let activeTimers = {};
+    let currentTheme = localStorage.getItem('theme') || '1';
+    let alarmSound = localStorage.getItem('alarmSound') || 'bell';
+    let formSubmitListenerAttached = false;
 
-        // Initialize
+    // ========== TASK FUNCTIONS ========== //
+    function createTask(name, priority, time) {
+        const newTask = {
+            id: `task-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+            name: name.trim(),
+            priority,
+            time: parseInt(time),
+            status: 'todo',
+            createdAt: new Date().toISOString()
+        };
+        
+        tasks.push(newTask);
+        saveTasks();
         renderTasks();
-        updateMusicStatus();
-        loadAlarmSound();
+    }
 
-        // Event Listeners
-        themeButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                setTheme(this.dataset.theme);
-            });
-        });
+    function startTask(taskId) {
+        const task = tasks.find(t => t.id === taskId);
+        if (task) {
+            task.status = 'in-progress';
+            task.timeLeft = task.time * 60;
+            saveTasks();
+            renderTasks();
+            startTimer(taskId);
+        }
+    }
 
-        spotifyBtn.addEventListener('click', () => {
-            musicConnected = true;
-            updateMusicStatus();
-            // In a real app, this would connect to Spotify API
-            alert('Spotify connection would be implemented here with proper API integration');
-        });
+    function deleteTask(taskId) {
+        stopTimer(taskId);
+        tasks = tasks.filter(task => task.id !== taskId);
+        saveTasks();
+        renderTasks();
+    }
 
-        appleBtn.addEventListener('click', () => {
-            musicConnected = true;
-            updateMusicStatus();
-            // In a real app, this would connect to Apple Music API
-            alert('Apple Music connection would be implemented here with proper API integration');
-        });
+    // ========== TIMER FUNCTIONS ========== //
+    function startTimer(taskId) {
+        stopTimer(taskId);
+        
+        const taskIndex = tasks.findIndex(t => t.id === taskId);
+        if (taskIndex === -1) return;
 
-        soundBtn.addEventListener('click', () => {
-            soundModal.style.display = 'flex';
-        });
+        if (!tasks[taskIndex].timeLeft) {
+            tasks[taskIndex].timeLeft = tasks[taskIndex].time * 60;
+        }
 
-        undoBtn.addEventListener('click', () => {
-            // Simple undo implementation - in a real app this would be more sophisticated
-            if (tasks.length > 0) {
-                tasks.pop();
+        updateTimerDisplay(taskId);
+        
+        activeTimers[taskId] = setInterval(() => {
+            tasks[taskIndex].timeLeft--;
+            updateTimerDisplay(taskId);
+            
+            if (tasks[taskIndex].timeLeft <= 0) {
+                stopTimer(taskId);
+                tasks[taskIndex].status = 'completed';
                 saveTasks();
                 renderTasks();
+                playAlarmSound();
+                document.getElementById('alert-message').textContent = `Timer for "${tasks[taskIndex].name}" is over!`;
+                alertModal.style.display = 'flex';
             }
-        });
+        }, 1000);
+    }
 
-        infoBtn.addEventListener('click', () => {
-            infoModal.style.display = 'flex';
-        });
+    function stopTimer(taskId) {
+        if (activeTimers[taskId]) {
+            clearInterval(activeTimers[taskId]);
+            delete activeTimers[taskId];
+        }
+    }
 
-        playBtn.addEventListener('click', () => {
-            if (musicConnected) {
-                musicPlaying = true;
-                updateMusicStatus();
-                // In a real app, this would play music through the API
-            }
-        });
+    function updateTimerDisplay(taskId) {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
 
-        pauseBtn.addEventListener('click', () => {
-            if (musicConnected) {
-                musicPlaying = false;
-                updateMusicStatus();
-                // In a real app, this would pause music through the API
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (musicConnected) {
-                // In a real app, this would skip to next track through the API
-                alert('Skipping to next track would be implemented with proper API integration');
-            }
-        });
-
-        volumeBtn.addEventListener('click', () => {
-            // In a real app, this would control volume
-            alert('Volume control would be implemented with proper API integration');
-        });
-
-        addTaskBtn.addEventListener('click', () => {
-            taskModal.style.display = 'flex';
-        });
-
-        clearCompletedBtn.addEventListener('click', () => {
-            tasks = tasks.filter(task => task.status !== 'completed');
-            saveTasks();
-            renderTasks();
-        });
-
-        closeTaskModal.addEventListener('click', () => {
-            taskModal.style.display = 'none';
-        });
-
-        closeSoundModal.addEventListener('click', () => {
-            soundModal.style.display = 'none';
-        });
-
-        closeInfoModal.addEventListener('click', () => {
-            infoModal.style.display = 'none';
-        });
-
-        closeAlertBtn.addEventListener('click', () => {
-            alertModal.style.display = 'none';
-        });
-
-        taskForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const taskName = document.getElementById('task-name').value;
-            const priority = document.querySelector('input[name="priority"]:checked').value;
-            const time = parseInt(document.getElementById('task-time').value);
-            
-            // Create new task
-            const newTask = {
-                id: Date.now().toString(),
-                name: taskName,
-                priority,
-                time,
-                status: 'todo',
-                createdAt: new Date().toISOString()
-            };
-            
-            // Add to tasks array
-            tasks.push(newTask);
-            saveTasks();
-            
-            // Reset form and close modal
-            taskForm.reset();
-            taskModal.style.display = 'none';
-            renderTasks();
-        });
-
-        testSoundBtn.addEventListener('click', () => {
-            playAlarmSound();
-        });
-
-        saveSoundBtn.addEventListener('click', () => {
-            alarmSound = alarmSoundSelect.value;
-            localStorage.setItem('alarmSound', alarmSound);
-            loadAlarmSound();
-            soundModal.style.display = 'none';
-        });
-
-        todoSort.addEventListener('change', () => {
-            sortTasks('todo', todoSort.value);
-        });
-
-        progressSort.addEventListener('change', () => {
-            sortTasks('in-progress', progressSort.value);
-        });
-
-        // Drag and Drop functionality
-        document.querySelectorAll('.task-list').forEach(list => {
-            list.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
-            list.addEventListener('dragenter', (e) => {
-                e.preventDefault();
-            });
-
-            list.addEventListener('drop', (e) => {
-                e.preventDefault();
-                if (draggedTask) {
-                    const taskId = draggedTask.dataset.id;
-                    const newStatus = list.id === 'todo-list' ? 'todo' : 
-                                    list.id === 'in-progress-list' ? 'in-progress' : 'completed';
-                    
-                    // Update task status
-                    const taskIndex = tasks.findIndex(t => t.id === taskId);
-                    if (taskIndex !== -1) {
-                        // If moving to in-progress, start timer
-                        if (newStatus === 'in-progress' && tasks[taskIndex].status !== 'in-progress') {
-                            tasks[taskIndex].timeLeft = tasks[taskIndex].time * 60;
-                            startTimer(taskId);
-                        }
-                        // If moving away from in-progress, stop timer
-                        else if (tasks[taskIndex].status === 'in-progress' && newStatus !== 'in-progress') {
-                            stopTimer(taskId);
-                        }
-                        // If timer completed, play sound
-                        if (newStatus === 'completed' && tasks[taskIndex].status === 'in-progress') {
-                            playAlarmSound();
-                            document.getElementById('alert-message').textContent = `Timer for "${tasks[taskIndex].name}" is over!`;
-                            alertModal.style.display = 'flex';
-                        }
-                        
-                        tasks[taskIndex].status = newStatus;
-                        saveTasks();
-                        renderTasks();
-                    }
-                }
-            });
-        });
-
-        // Functions
-        function setTheme(theme) {
-            // Remove active class from all buttons
-            themeButtons.forEach(b => b.classList.remove('active-theme'));
-            // Add active class to clicked button
-            document.querySelector(`.theme-switcher i[data-theme="${theme}"]`).classList.add('active-theme');
-            
-            currentTheme = theme;
-            localStorage.setItem('theme', theme);
-            
-            // Change theme colors
-            if (theme === '2') {
-                document.body.style.backgroundColor = '#d6eadf';
-                document.querySelectorAll('.header-section, .task-column').forEach(el => {
-                    el.style.backgroundColor = '#b8e0d2';
-                });
-            } else if (theme === '3') {
-                document.body.style.backgroundColor = '#aec6cf';
-                document.querySelectorAll('.header-section, .task-column').forEach(el => {
-                    el.style.backgroundColor = '#a2bffe';
-                });
-            } else {
-                // Default theme
-                document.body.style.backgroundColor = '#F7E9E9FF';
-                document.querySelectorAll('.header-section, .task-column').forEach(el => {
-                    el.style.backgroundColor = '#eac4d5';
-                });
+        const taskElement = document.querySelector(`.task[data-id="${taskId}"]`);
+        if (taskElement) {
+            const minutes = Math.floor(task.timeLeft / 60);
+            const seconds = task.timeLeft % 60;
+            const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const timerElement = taskElement.querySelector('.task-timer');
+            if (timerElement) {
+                timerElement.textContent = timeString;
             }
         }
+    }
 
-        function updateMusicStatus() {
-            const musicStatus = document.querySelector('.music-status');
-            if (musicConnected) {
-                musicStatus.textContent = musicPlaying ? 'Now Playing: Connected Music' : 'Music Paused';
-                playBtn.style.display = musicPlaying ? 'none' : 'block';
-                pauseBtn.style.display = musicPlaying ? 'block' : 'none';
-            } else {
-                musicStatus.textContent = 'No music connected';
-                playBtn.style.display = 'block';
-                pauseBtn.style.display = 'none';
-            }
-        }
+    // ========== RENDER FUNCTIONS ========== //
+    function renderTasks() {
+        renderTaskList(todoList, tasks.filter(task => task.status === 'todo'));
+        renderTaskList(inProgressList, tasks.filter(task => task.status === 'in-progress'), true);
+        renderTaskList(completedList, tasks.filter(task => task.status === 'completed'), false, true);
+    }
 
-        function loadAlarmSound() {
-            // In a real app, this would load different sound files
-            alarmSoundSelect.value = alarmSound;
-            // Using the same sound for demo purposes
-            alarmSoundElement.src = "https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3";
-        }
-
-        function playAlarmSound() {
-            alarmSoundElement.currentTime = 0;
-            alarmSoundElement.play();
-        }
-
-        function saveTasks() {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        }
-
-        function renderTasks() {
-            // Clear all lists
-            todoList.innerHTML = '';
-            inProgressList.innerHTML = '';
-            completedList.innerHTML = '';
-            
-            // Filter and render tasks for each column
-            const todoTasks = tasks.filter(task => task.status === 'todo');
-            const inProgressTasks = tasks.filter(task => task.status === 'in-progress');
-            const completedTasks = tasks.filter(task => task.status === 'completed');
-            
-            // Sort tasks
-            sortTasks('todo', todoSort.value);
-            sortTasks('in-progress', progressSort.value);
-            
-            // Add tasks to their respective columns
-            todoTasks.forEach(task => addTaskToColumn(task, todoList));
-            inProgressTasks.forEach(task => {
-                addTaskToColumn(task, inProgressList, true);
-                // Ensure timer is running for in-progress tasks
-                if (!activeTimers[task.id]) {
-                    startTimer(task.id);
-                }
-            });
-            completedTasks.forEach(task => addTaskToColumn(task, completedList, false, true));
-            
-            // Set up drag events for all tasks
-            document.querySelectorAll('.task').forEach(task => {
-                task.draggable = true;
-                task.addEventListener('dragstart', () => {
-                    draggedTask = task;
-                    task.classList.add('dragging');
-                });
-                task.addEventListener('dragend', () => {
-                    task.classList.remove('dragging');
-                    draggedTask = null;
-                });
-            });
-        }
-
-        function addTaskToColumn(task, column, isInProgress = false, isCompleted = false) {
+    function renderTaskList(container, taskSubset, isInProgress = false, isCompleted = false) {
+        container.innerHTML = '';
+        
+        taskSubset.forEach(task => {
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
             taskElement.dataset.id = task.id;
             
             if (isInProgress) {
-                const minutes = Math.floor((task.timeLeft || task.time * 60) / 60);
-                const seconds = (task.timeLeft || task.time * 60) % 60;
+                const minutes = Math.floor(task.timeLeft / 60);
+                const seconds = task.timeLeft % 60;
                 const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
                 taskElement.innerHTML = `
@@ -850,10 +612,8 @@
                     </div>
                 `;
                 
-                // Add event listeners for timer controls
                 taskElement.querySelector('.play-btn').addEventListener('click', () => startTimer(task.id));
                 taskElement.querySelector('.pause-btn').addEventListener('click', () => stopTimer(task.id));
-                taskElement.querySelector('.delete-btn').addEventListener('click', () => deleteTask(task.id));
             } 
             else if (isCompleted) {
                 taskElement.innerHTML = `
@@ -868,8 +628,6 @@
                         <i class="fas fa-trash-alt delete-btn" title="Delete Task"></i>
                     </div>
                 `;
-                
-                taskElement.querySelector('.delete-btn').addEventListener('click', () => deleteTask(task.id));
             } 
             else {
                 taskElement.innerHTML = `
@@ -880,167 +638,202 @@
                         <div class="task-time">${task.time} min</div>
                     </div>
                     <div class="task-actions">
-                        <i class="fas fa-edit edit-btn" title="Edit Task"></i>
+                        <i class="fas fa-play-circle move-btn" title="Start Task"></i>
                         <i class="fas fa-trash-alt delete-btn" title="Delete Task"></i>
                     </div>
                 `;
                 
-                taskElement.querySelector('.edit-btn').addEventListener('click', () => editTask(task.id));
-                taskElement.querySelector('.delete-btn').addEventListener('click', () => deleteTask(task.id));
+                taskElement.querySelector('.move-btn').addEventListener('click', () => startTask(task.id));
             }
             
-            column.appendChild(taskElement);
-        }
+            taskElement.querySelector('.delete-btn').addEventListener('click', () => deleteTask(task.id));
+            container.appendChild(taskElement);
+        });
+    }
 
-        function startTimer(taskId) {
-            const taskIndex = tasks.findIndex(t => t.id === taskId);
-            if (taskIndex === -1 || tasks[taskIndex].status !== 'in-progress') return;
-            
-            // Stop any existing timer for this task
-            stopTimer(taskId);
-            
-            // Initialize timeLeft if not set
-            if (!tasks[taskIndex].timeLeft) {
-                tasks[taskIndex].timeLeft = tasks[taskIndex].time * 60;
-            }
-            
-            // Start new timer
-            activeTimers[taskId] = setInterval(() => {
-                tasks[taskIndex].timeLeft--;
+    // ========== EVENT HANDLERS ========== //
+    function setupEventListeners() {
+        // Theme switcher
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+        });
+
+        // Modals
+        addTaskBtn.addEventListener('click', () => taskModal.style.display = 'flex');
+        soundBtn.addEventListener('click', () => soundModal.style.display = 'flex');
+        infoBtn.addEventListener('click', () => infoModal.style.display = 'flex');
+
+        // Close buttons
+        closeTaskModal.addEventListener('click', () => taskModal.style.display = 'none');
+        closeSoundModal.addEventListener('click', () => soundModal.style.display = 'none');
+        closeInfoModal.addEventListener('click', () => infoModal.style.display = 'none');
+        closeAlertBtn.addEventListener('click', () => alertModal.style.display = 'none');
+
+        // Form submission (only attach once)
+        if (!formSubmitListenerAttached) {
+            taskForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitBtn = e.target.querySelector('button[type="submit"]');
                 
-                // Update display
-                const taskElement = document.querySelector(`.task[data-id="${taskId}"]`);
-                if (taskElement) {
-                    const minutes = Math.floor(tasks[taskIndex].timeLeft / 60);
-                    const seconds = tasks[taskIndex].timeLeft % 60;
-                    const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    const timerElement = taskElement.querySelector('.task-timer');
-                    if (timerElement) {
-                        timerElement.textContent = timeString;
-                    }
-                }
+                if (submitBtn.disabled) return;
+                submitBtn.disabled = true;
                 
-                // Check if timer reached 0
-                if (tasks[taskIndex].timeLeft <= 0) {
-                    stopTimer(taskId);
-                    tasks[taskIndex].status = 'completed';
-                    saveTasks();
-                    renderTasks();
-                    playAlarmSound();
-                    document.getElementById('alert-message').textContent = `Timer for "${tasks[taskIndex].name}" is over!`;
-                    alertModal.style.display = 'flex';
+                const taskName = document.getElementById('task-name').value;
+                const priority = document.querySelector('input[name="priority"]:checked').value;
+                const time = document.getElementById('task-time').value;
+                
+                if (!taskName.trim() || isNaN(time) || time < 1) {
+                    alert('Please enter valid task details');
+                    submitBtn.disabled = false;
+                    return;
                 }
-            }, 1000);
+
+                createTask(taskName, priority, time);
+                
+                taskForm.reset();
+                taskModal.style.display = 'none';
+                submitBtn.disabled = false;
+            });
+            formSubmitListenerAttached = true;
         }
 
-        function stopTimer(taskId) {
-            if (activeTimers[taskId]) {
-                clearInterval(activeTimers[taskId]);
-                delete activeTimers[taskId];
-            }
-        }
+        // Other buttons
+        clearCompletedBtn.addEventListener('click', clearCompletedTasks);
+        undoBtn.addEventListener('click', undoLastAction);
+        testSoundBtn.addEventListener('click', playAlarmSound);
+        saveSoundBtn.addEventListener('click', saveAlarmSound);
+        
+        // Sorting
+        todoSort.addEventListener('change', () => sortTasks('todo', todoSort.value));
+        progressSort.addEventListener('change', () => sortTasks('in-progress', progressSort.value));
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === taskModal) taskModal.style.display = 'none';
+            if (e.target === soundModal) soundModal.style.display = 'none';
+            if (e.target === infoModal) infoModal.style.display = 'none';
+            if (e.target === alertModal) alertModal.style.display = 'none';
+        });
+    }
 
-        function deleteTask(taskId) {
-            stopTimer(taskId);
-            tasks = tasks.filter(task => task.id !== taskId);
+    // ========== UTILITY FUNCTIONS ========== //
+    function sortTasks(column, sortBy) {
+        let taskSubset = [];
+        let listElement = null;
+        
+        if (column === 'todo') {
+            taskSubset = tasks.filter(task => task.status === 'todo');
+            listElement = todoList;
+        } else if (column === 'in-progress') {
+            taskSubset = tasks.filter(task => task.status === 'in-progress');
+            listElement = inProgressList;
+        } else {
+            return;
+        }
+        
+        switch(sortBy) {
+            case 'priority-high':
+                taskSubset.sort((a, b) => {
+                    const priorityOrder = { 'high': 3, 'medium': 2, 'normal': 1 };
+                    return priorityOrder[b.priority] - priorityOrder[a.priority];
+                });
+                break;
+            case 'priority-low':
+                taskSubset.sort((a, b) => {
+                    const priorityOrder = { 'high': 3, 'medium': 2, 'normal': 1 };
+                    return priorityOrder[a.priority] - priorityOrder[b.priority];
+                });
+                break;
+            case 'name-asc':
+                taskSubset.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'name-desc':
+                taskSubset.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+            case 'time-asc':
+                taskSubset.sort((a, b) => (a.timeLeft || a.time * 60) - (b.timeLeft || b.time * 60));
+                break;
+            case 'time-desc':
+                taskSubset.sort((a, b) => (b.timeLeft || b.time * 60) - (a.timeLeft || a.time * 60));
+                break;
+        }
+        
+        renderTaskList(listElement, taskSubset, column === 'in-progress');
+    }
+
+    function clearCompletedTasks() {
+        tasks = tasks.filter(task => task.status !== 'completed');
+        saveTasks();
+        renderTasks();
+    }
+
+    function undoLastAction() {
+        if (tasks.length > 0) {
+            tasks.pop();
             saveTasks();
             renderTasks();
         }
+    }
 
-
-    /* MODDED HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */
+    function setTheme(theme) {
+        themeButtons.forEach(b => b.classList.remove('active-theme'));
+        document.querySelector(`.theme-switcher i[data-theme="${theme}"]`).classList.add('active-theme');
         
-        function editTask(taskId) {
-            const task = tasks.find(t => t.id === taskId);
-            if (!task) return;
-            
-            // Fill the form with task data
-            document.getElementById('task-name').value = task.name;
-            document.querySelector(`input[name="priority"][value="${task.priority}"]`).checked = true;
-            document.getElementById('task-time').value = task.time;
-            
-            // Show the modal
-            taskModal.style.display = 'flex';
-            
-            // Update the form submit handler to edit instead of add
-            const form = document.getElementById('task-form');
-            const oldSubmit = form.onsubmit;
-            
-            form.onsubmit = function(e) {
-                e.preventDefault();
-                
-                // Update task
-                task.name = document.getElementById('task-name').value;
-                task.priority = document.querySelector('input[name="priority"]:checked').value;
-                task.time = parseInt(document.getElementById('task-time').value);
-                
-                saveTasks();
-                renderTasks();
-                
-                // Reset form and handler
-                form.reset();
-                form.onsubmit = oldSubmit;
-                taskModal.style.display = 'none';
-            };
+        currentTheme = theme;
+        localStorage.setItem('theme', theme);
+        
+        let bgColor, headerColor;
+        
+        switch(theme) {
+            case '1': bgColor = '#F7E9E9FF'; headerColor = '#eac4d5'; break;
+            case '2': bgColor = '#d6eadf'; headerColor = '#b8e0d2'; break;
+            case '3': bgColor = '#aec6cf'; headerColor = '#a2bffe'; break;
+            case '4': bgColor = '#f0e6ff'; headerColor = '#d4b8ff'; break;
+            case '5': bgColor = '#fff5e6'; headerColor = '#ffe5b8'; break;
+            case '6': bgColor = '#e0e0e0'; headerColor = '#a0a0a0'; break;
+            default: bgColor = '#F7E9E9FF'; headerColor = '#eac4d5';
         }
+        
+        document.body.style.backgroundColor = bgColor;
+        document.querySelectorAll('.header-section, .task-column').forEach(el => {
+            el.style.backgroundColor = headerColor;
+        });
+        
+        document.querySelectorAll('.submit-btn, .alert-modal button').forEach(btn => {
+            btn.style.backgroundColor = headerColor;
+        });
+    }
 
-        function sortTasks(column, sortBy) {
-            let taskSubset = [];
-            let listElement = null;
-            
-            if (column === 'todo') {
-                taskSubset = tasks.filter(task => task.status === 'todo');
-                listElement = todoList;
-            } else if (column === 'in-progress') {
-                taskSubset = tasks.filter(task => task.status === 'in-progress');
-                listElement = inProgressList;
-            } else {
-                return;
-            }
-            
-            switch(sortBy) {
-                case 'priority-high':
-                    taskSubset.sort((a, b) => {
-                        const priorityOrder = { 'high': 3, 'medium': 2, 'normal': 1 };
-                        return priorityOrder[b.priority] - priorityOrder[a.priority];
-                    });
-                    break;
-                case 'priority-low':
-                    taskSubset.sort((a, b) => {
-                        const priorityOrder = { 'high': 3, 'medium': 2, 'normal': 1 };
-                        return priorityOrder[a.priority] - priorityOrder[b.priority];
-                    });
-                    break;
-                case 'name-asc':
-                    taskSubset.sort((a, b) => a.name.localeCompare(b.name));
-                    break;
-                case 'name-desc':
-                    taskSubset.sort((a, b) => b.name.localeCompare(a.name));
-                    break;
-                case 'time-asc':
-                    taskSubset.sort((a, b) => (a.timeLeft || a.time * 60) - (b.timeLeft || b.time * 60));
-                    break;
-                case 'time-desc':
-                    taskSubset.sort((a, b) => (b.timeLeft || b.time * 60) - (a.timeLeft || a.time * 60));
-                    break;
-            }
-            
-            // Re-render the sorted tasks
-            listElement.innerHTML = '';
-            taskSubset.forEach(task => {
-                if (column === 'todo') {
-                    addTaskToColumn(task, listElement);
-                } else {
-                    addTaskToColumn(task, listElement, true);
-                }
-            });
-        }
+    function playAlarmSound() {
+        alarmSoundElement.currentTime = 0;
+        alarmSoundElement.play();
+    }
 
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            setTheme(savedTheme);
-        }
-    </script>
+    function saveAlarmSound() {
+        alarmSound = alarmSoundSelect.value;
+        localStorage.setItem('alarmSound', alarmSound);
+        alarmSoundElement.src = "https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3";
+        soundModal.style.display = 'none';
+    }
+
+    function saveTasks() {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    // ========== INITIALIZATION ========== //
+    function init() {
+        setupEventListeners();
+        renderTasks();
+        setTheme(currentTheme);
+        
+        tasks.filter(task => task.status === 'in-progress').forEach(task => {
+            if (!task.timeLeft) task.timeLeft = task.time * 60;
+            startTimer(task.id);
+        });
+    }
+
+    // Start the app
+    init();
+</script>
 </body>
 </html>
